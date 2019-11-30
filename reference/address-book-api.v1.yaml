@@ -3,6 +3,8 @@ info:
   title: Address Book API
   version: '1.0'
   description: Address book
+  contact:
+    name: support
 servers:
   - url: 'http://localhost:3100'
 paths:
@@ -20,7 +22,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/address'
-              examples: {}
+              examples:
+                example-1: {}
       operationId: get-addresses
       description: List of addresses
       requestBody: {}
@@ -55,12 +58,38 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/address'
-      operationId: 'get-addresses-{addressId}'
+              examples:
+                example-1:
+                  value:
+                    id: 1
+                    city: Winnipeg
+                    province: Manitoba
+                    postalcode: R4R 4R4
+                    address1: 123 Nowhere avenue
+                example-2:
+                  value:
+                    id: 2
+                    city: Brandon
+                    province: Manitoba
+                    postalcode: R2R 2R2
+                    address1: 456 Iamhere street
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/error400'
+              examples:
+                example-1:
+                  value:
+                    errorNumber: 400
+                    errorMessage: Pet not found
+      operationId: get-addresses-addressId
       description: Get an address
       requestBody: {}
     put:
       summary: ''
-      operationId: 'put-addresses-{addressId}'
+      operationId: put-addresses-addressId
       responses:
         '204':
           description: No Content
@@ -72,7 +101,7 @@ paths:
               $ref: '#/components/schemas/address'
     delete:
       summary: ''
-      operationId: 'delete-addresses-{addressId}'
+      operationId: delete-addresses-addressId
       responses:
         '204':
           description: No Content
@@ -107,4 +136,17 @@ components:
           type: string
         address1:
           type: string
+      description: Address
+    error400:
+      title: error400
+      type: object
+      properties:
+        errorNumber:
+          type: number
+        errorMessage:
+          type: string
+      x-examples:
+        example-1:
+          errorNumber: 400
+          errorMessage: Pet not found
   securitySchemes: {}
